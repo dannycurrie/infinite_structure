@@ -1,0 +1,17 @@
+{
+  "name": "infinite-structure",
+  "version": "1.0.0",
+  "private": "true",
+  "license": "MIT",
+  "scripts": {
+    "start": "open -a 'Google Chrome' http://localhost:3000/dist/index.html & node main.js",
+    "build": "webpack",
+    "dev": "webpack --watch"
+  },
+  "dependencies": {
+    "rxjs": "^6.6.2",
+    "tone": "^14.7.39",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
