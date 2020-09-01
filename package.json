@@ -6,7 +6,7 @@
   "scripts": {
     "start": "open -a 'Google Chrome' http://localhost:3000/dist/index.html & node main.js",
     "build": "webpack",
-    "dev": "webpack --watch"
+    "dev": "webpack --mode='development' --watch"
   },
   "dependencies": {
     "rxjs": "^6.6.2",
