@@ -5,16 +5,20 @@ import model from './model';
 import * as Tone from 'tone';
 import pattern from './model/pattern';
 
-const generator = wrapGenerator(model().perm);
+const m = model(pattern);
+
+const generator = wrapGenerator(m.perm);
 const sub = new Rx.Subject();
 const genStream = obGen(generator, sub);
 
-const startAudio = () => Tone.Transport.start();
+const setup = () => {
+  Tone.Transport.start();
+};
 const onError = (err) => console.log('onError', err);
 const onComplete = () => console.log('done');
 
 const click = Rx.fromEvent(document, 'click');
 
 click.subscribe(genStream);
-click.subscribe(startAudio);
-sub.subscribe(pattern, onError, onComplete);
+click.subscribe(setup);
+sub.subscribe(m.play, onError, onComplete);
