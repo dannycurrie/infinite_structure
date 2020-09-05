@@ -11,14 +11,16 @@ const generator = wrapGenerator(m.perm);
 const sub = new Rx.Subject();
 const genStream = obGen(generator, sub);
 
+let started = false;
+
 const setup = () => {
-  Tone.Transport.start();
+  if (!started) Tone.Transport.start();
+  started = true;
 };
 const onError = (err) => console.log('onError', err);
-const onComplete = () => console.log('done');
 
 const click = Rx.fromEvent(document, 'click');
 
 click.subscribe(genStream);
 click.subscribe(setup);
-sub.subscribe(m.play, onError, onComplete);
+sub.subscribe(m.play, onError);
