@@ -47,3 +47,54 @@ export const cello = {
     release: 0.1,
   },
 };
+
+export const bass = {
+  oscillator: {
+    type: 'fmsquare5',
+    modulationType: 'triangle',
+    modulationIndex: 2,
+    harmonicity: 0.501,
+  },
+  filter: {
+    Q: 1,
+    type: 'lowpass',
+    rolloff: -24,
+  },
+  envelope: {
+    attack: 0.01,
+    decay: 0.1,
+    sustain: 0.4,
+    release: 2,
+  },
+  filterEnvelope: {
+    attack: 0.01,
+    decay: 0.1,
+    sustain: 0.8,
+    release: 1.5,
+    baseFrequency: 50,
+    octaves: 4.4,
+  },
+};
+
+export const harmonics = {
+  harmonicity: 3.999,
+  oscillator: {
+    type: 'square',
+  },
+  envelope: {
+    attack: 0.03,
+    decay: 0.3,
+    sustain: 0.7,
+    release: 0.8,
+  },
+  modulation: {
+    volume: 12,
+    type: 'square6',
+  },
+  modulationEnvelope: {
+    attack: 2,
+    decay: 3,
+    sustain: 0.8,
+    release: 0.1,
+  },
+};

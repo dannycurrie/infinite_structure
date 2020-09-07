@@ -1,4 +1,5 @@
-import { cello } from './presets';
+import * as Tone from 'tone';
+import { bass, harmonics } from './presets';
 
 const NOTES = [
   'C#',
@@ -11,6 +12,14 @@ const NOTES = [
   ['C#3', 'E3'],
   ['B3', 'A3'],
 ];
+
+const feedbackDelay = new Tone.FeedbackDelay('8n', 0.5);
+const chorus = new Tone.Chorus(4, 2.5, 0.5);
+const reverb = new Tone.Reverb({
+  decay: 8,
+  wet: 0.6,
+  preDelay: 0.4,
+});
 
 const SUB_DIVS = ['1n', '2n', '3n', '4n'];
 
@@ -47,10 +56,20 @@ export default (playFn) => {
   let play = () =>
     (loops = patterns.filter(changed).map(setChanged).map(playFn));
 
+  // bass pattern
+  patterns.push({
+    synth: 'MonoSynth',
+    options: bass,
+    notes: getRandomNotes(),
+    subDivision: getRandomDivision(),
+    changed: true,
+  });
+
   for (let i = 0; i < 3; i++) {
     patterns.push({
-      synth: 'FMSynth',
-      options: cello,
+      synth: 'AMSynth',
+      options: harmonics,
+      effects: [chorus, feedbackDelay, reverb],
       notes: getRandomNotes(),
       subDivision: getRandomDivision(),
       changed: true,
