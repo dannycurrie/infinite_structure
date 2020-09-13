@@ -6,7 +6,8 @@
   "scripts": {
     "start": "open -a 'Google Chrome' http://localhost:3000/dist/index.html & node main.js",
     "build": "webpack",
-    "dev": "webpack --mode='development' --watch"
+    "dev": "webpack --mode='development' --watch",
+    "deploy": "aws s3 sync dist/ s3://infinite-structure"
   },
   "dependencies": {
     "rxjs": "^6.6.2",
