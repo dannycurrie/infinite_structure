@@ -98,3 +98,5 @@ export const harmonics = {
     release: 0.1,
   },
 };
+
+export * from './chords';

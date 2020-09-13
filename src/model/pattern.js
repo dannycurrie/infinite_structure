@@ -29,7 +29,7 @@ export default ({
 
   const loop = new Tone.Loop((time) => {
     synthPart.start(time);
-  }, length).start(0);
+  }).start(0);
 
   return {
     loop,

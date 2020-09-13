@@ -1,5 +1,7 @@
 import * as Tone from 'tone';
-import { bass, harmonics } from './presets';
+import { bass, harmonics, cello } from './presets';
+import chords from './presets/chords';
+import notesGraph from './notes-graph';
 
 const NOTES = [
   'C#',
@@ -7,6 +9,7 @@ const NOTES = [
   'E',
   'F#',
   'G#',
+  ['D3', 'E3', 'C#3'],
   'A',
   'B',
   ['C#3', 'E3'],
@@ -16,12 +19,29 @@ const NOTES = [
 const feedbackDelay = new Tone.FeedbackDelay('8n', 0.5);
 const chorus = new Tone.Chorus(4, 2.5, 0.5);
 const reverb = new Tone.Reverb({
-  decay: 8,
-  wet: 0.6,
+  decay: 5,
+  wet: 0.3,
   preDelay: 0.4,
 });
 
-const SUB_DIVS = ['1n', '2n', '3n', '4n'];
+const SUB_DIVS = [
+  '1m',
+  '1n',
+  '1n.',
+  '2n',
+  '2n.',
+  '2t',
+  '4n',
+  '4n.',
+  '4t',
+  '8n',
+  '8n.',
+  '8t',
+];
+
+const SYNTHS = ['MonoSynth', 'AMSynth', 'FMSynth'];
+
+const INSTRUMENTS = [bass, harmonics, cello];
 
 const getRandomIndex = (l) => Math.trunc(Math.random() * l);
 
@@ -35,6 +55,11 @@ const getRandomNotes = () =>
   [...Array(getRandomIndex(10)).keys()].map(getRandomNote);
 
 const getRandomDivision = () => SUB_DIVS[getRandomIndex(SUB_DIVS.length)];
+
+const getRandomInstrument = () =>
+  INSTRUMENTS[getRandomIndex(INSTRUMENTS.length)];
+
+const getRandomSynth = () => SYNTHS[getRandomIndex(SYNTHS.length)];
 
 const changed = (pattern) => pattern.changed;
 
@@ -56,20 +81,23 @@ export default (playFn) => {
   let play = () =>
     (loops = patterns.filter(changed).map(setChanged).map(playFn));
 
+  const bassLine = chords.reduce((acc, curr) => acc.concat(curr), []);
+
   // bass pattern
   patterns.push({
     synth: 'MonoSynth',
     options: bass,
-    notes: getRandomNotes(),
-    subDivision: getRandomDivision(),
+    effects: [reverb],
+    notes: bassLine,
+    subDivision: '8n',
     changed: true,
   });
 
   for (let i = 0; i < 3; i++) {
     patterns.push({
-      synth: 'AMSynth',
-      options: harmonics,
-      effects: [chorus, feedbackDelay, reverb],
+      synth: getRandomSynth(),
+      options: getRandomInstrument(),
+      effects: [feedbackDelay, reverb],
       notes: getRandomNotes(),
       subDivision: getRandomDivision(),
       changed: true,
@@ -79,7 +107,12 @@ export default (playFn) => {
   const perm = () => {
     // pick a random loop
     const i = getRandomIndex(patterns.length);
-    patterns[i] = { ...patterns[i], notes: getRandomNotes(), changed: true };
+    patterns[i] = {
+      ...patterns[i],
+      notes: getRandomNotes(),
+      subDivision: getRandomDivision(),
+      changed: true,
+    };
     const loop = loops[i];
     if (loop) stopLoop(loop);
   };
