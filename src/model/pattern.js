@@ -1,12 +1,13 @@
 import * as Tone from 'tone';
 
 export default ({
+  id,
   synth,
   options,
   effects = [],
   notes,
   subDivision = '4n',
-  length = '1n',
+  callback = () => {},
 }) => {
   const synthA = new Tone[synth](options);
 
@@ -22,6 +23,7 @@ export default ({
   const synthPart = new Tone.Sequence(
     function (time, note) {
       synthA.triggerAttackRelease(note, subDivision, time);
+      callback({ note, id });
     },
     notes,
     subDivision

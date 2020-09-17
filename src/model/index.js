@@ -1,4 +1,5 @@
 import * as Tone from 'tone';
+import { Subject } from 'rxjs';
 import { bass, harmonics, cello } from './presets';
 import chords from './presets/chords';
 import notesGraph from './notes-graph';
@@ -45,6 +46,8 @@ const INSTRUMENTS = [bass, harmonics, cello];
 
 const getRandomIndex = (l) => Math.trunc(Math.random() * l);
 
+const notes$ = new Subject();
+
 const getRandomNote = () => {
   const note = NOTES[getRandomIndex(NOTES.length)];
   if (Array.isArray(note)) return note;
@@ -83,28 +86,34 @@ export default (playFn) => {
 
   const bassLine = chords.reduce((acc, curr) => acc.concat(curr), []);
 
+  const notePlayed = (note) => notes$.next(note);
+
   // bass pattern
   patterns.push({
+    id: 'bass',
     synth: 'MonoSynth',
     options: bass,
     effects: [reverb],
     notes: bassLine,
     subDivision: '8n',
+    callback: notePlayed,
     changed: true,
   });
 
   for (let i = 0; i < 3; i++) {
     patterns.push({
+      id: `synth${i}`,
       synth: getRandomSynth(),
       options: getRandomInstrument(),
       effects: [feedbackDelay, reverb],
       notes: getRandomNotes(),
       subDivision: getRandomDivision(),
+      callback: notePlayed,
       changed: true,
     });
   }
 
-  const perm = () => {
+  const nextPatterns = () => {
     // pick a random loop
     const i = getRandomIndex(patterns.length);
     patterns[i] = {
@@ -118,7 +127,8 @@ export default (playFn) => {
   };
 
   return {
-    perm,
+    nextPatterns,
+    notes$,
     play,
   };
 };

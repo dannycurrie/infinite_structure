@@ -19,7 +19,13 @@ export default (element, { note, edges }) => {
   const node = element.querySelector('div');
 
   // functions
-  const update = () => {};
+  const update = (instrument) => {
+    console.log(note + 'being played by ' + instrument);
+  };
 
   // event listeners
+
+  return {
+    update,
+  };
 };
