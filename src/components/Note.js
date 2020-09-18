@@ -1,31 +1,40 @@
-export default (element, { note, edges }) => {
-  // css vars
-  // element.style.setProperty('--var', 'initial value');
+import { TAU } from '../constants';
 
-  const style = ``;
-
-  const html = `
-    <div>${note}</div>
-    `;
-
-  element.innerHTML = `
-    <style>
-      ${style}
-    </style>
-    ${html}
-    `;
-
-  // elements
-  const node = element.querySelector('div');
-
-  // functions
-  const update = (instrument) => {
-    console.log(note + 'being played by ' + instrument);
+export default (
+  canvas,
+  ctx,
+  { note, edges, startX, startY, startVelX, startVelY }
+) => {
+  // init
+  let x = startX || Math.random() * canvas.width;
+  let y = startY || Math.random() * canvas.height;
+  let vel = {
+    x: startVelX || Math.random() * 2 - 1,
+    y: startVelY || Math.random() * 2 - 1,
   };
 
-  // event listeners
+  // functions
+  const update = () => {
+    if (x > canvas.width + 50 || x < -50) {
+      vel.x = -vel.x;
+    }
+    if (y > canvas.height + 50 || y < -50) {
+      vel.y = -vel.y;
+    }
+    x += vel.x;
+    y += vel.y;
+  };
+
+  const draw = () => {
+    ctx.beginPath();
+    ctx.globalAlpha = 0.4;
+    ctx.fillStyle = '#448fda';
+    ctx.arc((0.5 + x) | 0, (0.5 + y) | 0, 3, 0, TAU, false);
+    ctx.fill();
+  };
 
   return {
+    draw,
     update,
   };
 };
