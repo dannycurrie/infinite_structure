@@ -28,12 +28,17 @@ export default (
   const draw = () => {
     ctx.beginPath();
     ctx.globalAlpha = 0.4;
-    ctx.fillStyle = '#448fda';
+    ctx.fillStyle = '#000';
     ctx.arc((0.5 + x) | 0, (0.5 + y) | 0, 3, 0, TAU, false);
     ctx.fill();
+    ctx.fillText(note, x, y);
   };
 
   return {
+    x,
+    y,
+    note,
+    edges,
     draw,
     update,
   };

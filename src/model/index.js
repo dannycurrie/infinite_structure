@@ -126,9 +126,12 @@ export default (playFn) => {
     if (loop) stopLoop(loop);
   };
 
+  const graph = notesGraph(chords);
+
   return {
     nextPatterns,
     notes$,
     play,
+    graph,
   };
 };
