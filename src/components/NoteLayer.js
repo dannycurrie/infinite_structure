@@ -41,25 +41,22 @@ export default (element, notesGraph) => {
     // Draw particles
     for (let i = 0; i < notes.length; i++) {
       const note = notes[i];
-      note.update();
       note.draw();
 
       // Draw connections
+      ctx.beginPath();
+      ctx.lineWidth = '2px';
+      ctx.strokeStyle = 'black';
+      ctx.moveTo(note.x(), note.y());
       for (let edge of note.edges) {
         const edgeNote = notesLookup[edge];
-        ctx.beginPath();
-        ctx.strokeStyle = '#000';
-        ctx.globalAlpha = 0.4;
-        ctx.lineWidth = 0.7;
-        ctx.moveTo(note.x, note.y);
-        ctx.lineTo(edgeNote.x, edgeNote.y);
-        ctx.stroke();
+        ctx.lineTo(edgeNote.x(), edgeNote.y());
       }
+      ctx.stroke();
     }
   };
 
   const loop = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     update();
     draw();
     requestAnimationFrame(loop);
