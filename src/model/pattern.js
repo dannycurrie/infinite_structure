@@ -23,7 +23,7 @@ export default ({
   const synthPart = new Tone.Sequence(
     function (time, note) {
       synthA.triggerAttackRelease(note, subDivision, time);
-      callback({ note, id });
+      callback({ note, id, synth });
     },
     notes,
     subDivision

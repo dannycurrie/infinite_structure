@@ -34,14 +34,7 @@ setup$.subscribe(
 
 patternSubject.subscribe(play);
 
-notes$
-  .pipe(
-    groupBy(({ id }) => id),
-    mergeMap((inst$) => inst$.pipe(tap(console.log)))
-  )
-  .subscribe();
-
 const app = document.getElementById('app');
-const noteLayer = NoteLayer(app, graph);
+const noteLayer = NoteLayer(app, graph, notes$);
 // go
 noteLayer.loop();

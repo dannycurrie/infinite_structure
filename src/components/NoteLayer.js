@@ -1,7 +1,7 @@
 import { ONE_FRAME } from '../constants';
 import Note from './Note';
 
-export default (element, notesGraph) => {
+export default (element, notesGraph, notesStream$) => {
   // init
   const canvas = document.createElement('canvas');
   element.appendChild(canvas);
@@ -10,11 +10,16 @@ export default (element, notesGraph) => {
   const ctx = canvas.getContext('2d');
 
   const notes = Object.values(notesGraph).map((data) =>
-    Note(canvas, ctx, {
-      ...data,
-      startX: Math.random() * canvas.width,
-      startY: Math.random() * canvas.height,
-    })
+    Note(
+      canvas,
+      ctx,
+      {
+        ...data,
+        startX: Math.random() * canvas.width,
+        startY: Math.random() * canvas.height,
+      },
+      notesStream$
+    )
   );
   const notesLookup = notes.reduce(
     (acc, curr) => ({
