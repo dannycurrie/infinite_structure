@@ -1,5 +1,8 @@
 import { ONE_FRAME } from '../constants';
 import Note from './Note';
+import theme from '../theme';
+
+const { white, background } = theme;
 
 export default (element, notesGraph, notesStream$) => {
   // init
@@ -41,7 +44,7 @@ export default (element, notesGraph, notesStream$) => {
 
   const draw = () => {
     ctx.globalAlpha = 1;
-    ctx.fillStyle = '#FFF';
+    ctx.fillStyle = background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     // Draw particles
     for (let i = 0; i < notes.length; i++) {
@@ -51,11 +54,15 @@ export default (element, notesGraph, notesStream$) => {
       // Draw connections
       ctx.beginPath();
       ctx.lineWidth = '2px';
-      ctx.strokeStyle = 'black';
+      ctx.strokeStyle = white;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = white;
       ctx.moveTo(note.x(), note.y());
       for (let edge of note.edges) {
         const edgeNote = notesLookup[edge];
-        ctx.lineTo(edgeNote.x(), edgeNote.y());
+        const x = edgeNote.x();
+        const y = edgeNote.y();
+        ctx.lineTo(x, y);
       }
       ctx.stroke();
     }

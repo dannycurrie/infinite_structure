@@ -1,12 +1,13 @@
 import { TAU } from '../constants';
 import { filter } from 'rxjs/operators';
+import theme from '../theme';
 
 const colours = {
-  bass: '#FF0000',
-  synth0: '#00FF00',
-  synth1: '#0000FF',
-  synth2: '#00FFFF',
-  synth3: '#FFFF00',
+  bass: theme.one,
+  synth0: theme.two,
+  synth1: theme.three,
+  synth2: theme.two,
+  synth3: theme.three,
 };
 
 export default (
@@ -35,12 +36,14 @@ export default (
     _y += vel.y;
   };
 
-  let colour = '#000';
+  let colour = theme.white;
 
   const draw = () => {
     ctx.beginPath();
     ctx.globalAlpha = 0.4;
     ctx.fillStyle = colour;
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = colour;
     ctx.arc((0.5 + _x) | 0, (0.5 + _y) | 0, 15, 0, TAU, false);
     ctx.fill();
   };
@@ -50,7 +53,7 @@ export default (
     .subscribe(({ id }) => {
       colour = colours[id];
       setTimeout(() => {
-        colour = '#000';
+        colour = theme.white;
       }, 500);
     });
 
